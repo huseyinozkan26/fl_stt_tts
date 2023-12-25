@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ses Kaydı</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.rawgit.com/higuma/web-audio-recorder-js/ce8d44fe/web-audio-recorder.js"></script>
+</head>
+
+<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+
+    <div class="container">
+        <h1 class="text-center mb-4">Ses Kaydı</h1>
+
+        <form id="speechRecordingForm">
+            <div class="mb-3">
+                <button type="button" id="recordButton" class="btn btn-primary">Kaydı Başlat</button>
+                <button type="button" id="stopButton" class="btn btn-danger" style="display: none;">Kaydı
+                    Durdur</button>
+            </div>
+
+            <audio id="audioPlayer" controls style="display: none;"></audio>
+
+            <textarea id="correct_text" name="correct_text" class="form-control mb-3" rows="4"
+                placeholder="Doğru Metin"></textarea>
+
+            <button type="button" id="submitRecording" class="btn btn-success" disabled>Kaydı Gönder</button>
+        </form>
+    </div>
+
+    <script>
+        let rec;
+        let audioChunks = [];
+
+        document.getElementById('recordButton').addEventListener('click', function () {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function (stream) {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    rec = new Recorder(audioContext.createMediaStreamSource(stream), { numChannels: 1 });
+                    rec.record();
+
+                    document.getElementById('recordButton').disabled = true;
+                    document.getElementById('stopButton').style.display = 'inline-block';
+                })
+                .catch(function (err) {
+                    console.error('Error accessing microphone:', err);
+                });
+        });
+
+        document.getElementById('stopButton').addEventListener('click', function () {
+            rec.stop();
+            rec.exportWAV(function (blob) {
+                const audioUrl = URL.createObjectURL(blob);
+                document.getElementById('audioPlayer').src = audioUrl;
+                document.getElementById('audioPlayer').style.display = 'block';
+                document.getElementById('submitRecording').disabled = false;
+            });
+
+            document.getElementById('recordButton').disabled = false;
+            document.getElementById('stopButton').style.display = 'none';
+        });
+
+        document.getElementById('submitRecording').addEventListener('click', function () {
+            rec.exportWAV(function (blob) {
+                const formData = new FormData();
+                formData.append('audio', blob, 'recorded.wav');
+                formData.append('correct_text', document.getElementById('correct_text').value);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:8000/stt/api/speech-recognition/',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log('Server response:', response);
+                    },
+                    error: function (error) {
+                        console.error('Error sending recording to server:', error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

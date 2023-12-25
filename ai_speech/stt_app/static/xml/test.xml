@@ -1,0 +1,57 @@
+<Course>
+    <CompanyName value="TFL" />
+    <DepartmentName value="Ar-Ge" />
+    <CourseName value="%u0130ngilizce" />
+    <LearnerName value="huseyin.ozkan" />
+    <LearnerID value="huseyin.ozkan" />
+    <LessonName value="HTML5Temp33120511317671Pre" />
+    <QuizAttempts value="1" />
+    <TotalQuestions value="2" />
+    <Variables>
+    </Variables>
+    <Result>
+        <CoreData>
+            <Status value="completed" />
+            <Location value="3" />
+            <Score value="100" />
+            <SessionTime value="00:00:10" />
+        </CoreData>
+        <InteractionData>
+            <Interactions>
+                <Date value="12/25/2023" />
+                <InteractionTime value="10:59:1" />
+                <InteractionID value="44731" />
+                <ObjectiveID value="Quiz_2021920123514" />
+                <InteractionType value="true-false" />
+                <CorrectResponse value="true" />
+                <StudentResponse value="true" />
+                <Result value="C" />
+                <Weight value="10" />
+                <Latency value="00:00:1" />
+                <Attempt value="1" />
+            </Interactions> t<Interactions>
+                <Date value="12/25/2023" />
+                <InteractionTime value="10:59:5" />
+                <InteractionID value="44972" />
+                <ObjectiveID value="Quiz_2021920123514" />
+                <InteractionType value="true-false" />
+                <CorrectResponse value="true" />
+                <StudentResponse value="true" />
+                <Result value="C" />
+                <Weight value="10" />
+                <Latency value="00:00:1" />
+                <Attempt value="1" />
+            </Interactions>
+        </InteractionData>
+    </Result>
+</Course>
+
+
+<!-- 
+CompanyName: TFL
+DepartmentName: Ar-Ge
+CourseName: İngilizce
+<QueryDict: {'CompanyName': ['TFL'], 'DepartmentName': ['Ar-Ge'], 'CourseName': ['İngilizce'], 'Filename': ['HTML5Temp33120511317671Pre_huseyin.ozkan_1703491150749.xml'], 'Filedata': ['<Course>\r\t<CompanyName value="TFL"/>\r\t<DepartmentName value="Ar-Ge"/>\r\t<CourseName value="%u0130ngilizce"/>\r\t<LearnerName value="huseyin.ozkan"/>\r\t<LearnerID value="huseyin.ozkan"/>\r\t<LessonName value="HTML5Temp33120511317671Pre"/>\r\t<QuizAttempts value="1"/>\r\t<TotalQuestions value="2"/>\r\t<Variables>\r\t</Variables>\r\t<Result>\r\t<CoreData>\r\t<Status value="completed"/>\r\t<Location value="3"/>\r\t<Score value="100"/>\r\t<SessionTime value="00:00:10"/>\r\t</CoreData>\r\t<InteractionData>\r\t<Interactions>\r\t<Date value="12/25/2023"/>\r\t<InteractionTime value="10:59:1"/>\r\t<InteractionID value="44731"/>\r\t<ObjectiveID value="Quiz_2021920123514"/>\r\t<InteractionType value="true-false"/>\r\t<CorrectResponse value="true"/>\r\t<StudentResponse value="true"/>\r\t<Result value="C"/>\r\t<Weight value="10"/>\r\t<Latency value="00:00:1"/>\r\t<Attempt value="1"/>\r\t</Interactions>\r\t<Interactions>\r\t<Date value="12/25/2023"/>\r\t<InteractionTime value="10:59:5"/>\r\t<InteractionID value="44972"/>\r\t<ObjectiveID value="Quiz_2021920123514"/>\r\t<InteractionType value="true-false"/>\r\t<CorrectResponse value="true"/>\r\t<StudentResponse value="true"/>\r\t<Result value="C"/>\r\t<Weight value="10"/>\r\t<Latency value="00:00:1"/>\r\t<Attempt value="1"/>\r\t</Interactions>\r\t</InteractionData>\r\t</Result>\r\t</Course>']}>
+Filedata</Course>tionData>/>0:1"/>ue"/>lse"/>4"/>1Pre"/>
+
+-->

@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Telafuz değerledirme test ekranı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+
+    <div class="container">
+
+        <h1>Telafuz Değerlendirme Test Ekranı</h1>
+        <form id="speechRecordingForm">
+           
+            <input type="file" id="audio" name="audio" style="display: none;">
+            <input type="text" class="form-control" id="correct_text" name="correct_text" value="i love the animals so i have a dog">
+                <div class="mb-3" id="controls">
+                    <button type="button" id="recordButton" class="btn btn-primary">Kaydet</button>
+                </div>
+        </form>
+        <div id="result_container"></div>
+        <audio id="audioPlayer" controls style="display: none;"></audio>
+    </div>
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+    <script src="{% static 'recorder.js' %}"></script>
+    <script src="{% static 'app.js' %}"></script>
+</body>
+
+</html>

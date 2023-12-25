@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ses Değerlendirme API Test</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Değerlendirme Formu</h1>
+        <form id="speechRecognitionForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="audio" class="form-label">Ses dosyası:</label>
+                <input type="file" class="form-control" id="audio" name="audio" accept="audio/*" required>
+            </div>
+            
+            <!-- Yeni input eklendi -->
+            <div class="mb-3">
+                <label for="correct_text" class="form-label">Doğru Metin:</label>
+                <input type="text" class="form-control" id="correct_text" name="correct_text" required>
+            </div>
+            
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Yükle</button>
+        </form>
+
+        <div id="resultContainer" class="mt-4">
+            <!-- AJAX ile alınan sonuçları burada görüntüleyin -->
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            var formData = new FormData($('#speechRecognitionForm')[0]);
+            $('#resultContainer').html('<p>Değerlendiriliyor... Bekleyin...</p>');
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8000/stt/api/speech-recognition/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response);
+                    // Başarılı yanıtı aldığınızda burada işlemleri gerçekleştirin
+                    $('#resultContainer').html('<p>%'+response.accuracy+'Doğru');
+                },
+                error: function (error) {
+                    // Hata durumunda burada işlemleri gerçekleştirin
+                    $('#resultContainer').html('<p>Hata: ' + error.responseText + '</p>');
+                }
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

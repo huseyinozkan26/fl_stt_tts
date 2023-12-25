@@ -1,0 +1,350 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Slideshow</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="http://localhost:8000/static/toxml.js"></script>
+    <script src="http://localhost:8000/static/recorder.js"></script>
+    <style>
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .content-content {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .content-button {
+            margin-top: 20px;
+            font-size: 20pt;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="content-container">
+            <div class="content-content">
+                <div class="progress">
+                    <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 25%;"
+                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                </div>
+                <br />
+                <input type="file" id="audio" name="audio" style="display: none;">
+                <img src="" class="d-block mx-auto" alt="" />
+                <p id="correct_text">text</p>
+                <div id="result_container"></div>
+                <button type="button" class="btn btn-primary content-button" id="recordButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
+                        <path
+                            d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3" />
+                    </svg><br>
+                    Read
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // JSON verilerini data.json dosyasından al
+        var questionData = [
+            {
+                "image": "./img/1.jpg",
+                "text": "There is a cat under the table."
+            },
+            {
+                "image": "./img/2.jpg",
+                "text": "There are three apples in the basket."
+            },
+            {
+                "image": "./img/3.jpg",
+                "text": "There is a computer on the desk."
+            },
+            {
+                "image": "./img/4.jpg",
+                "text": "There are some flowers in the garden."
+            },
+            {
+                "image": "./img/5.jpg",
+                "text": "There is a car in front of the house."
+            },
+            {
+                "image": "./img/6.jpg",
+                "text": "There are five students in the classroom."
+            },
+            {
+                "image": "./img/7.jpg",
+                "text": "There is a clock on the wall."
+            },
+            {
+                "image": "./img/8.jpg",
+                "text": "There are many pictures on the wall."
+            },
+            {
+                "image": "./img/9.jpg",
+                "text": "There is a book on the shelf."
+            },
+            {
+                "image": "./img/10.jpg",
+                "text": "There are two chairs in the living room."
+            }
+        ];
+
+        var randomDecimal = Math.random();
+        var randomFileNumber = Math.floor(randomDecimal * (999999999 - 100000000 + 1)) + 10000;
+
+        let _counter = 0;
+        let gumStream;
+        let rec;
+        let input;
+        let audioContext;
+        let total = 0;
+        let learner = "test.user";
+        let cpLessonName = "HTML5" + randomFileNumber;
+        let cpTotalQuestions = questionData.length
+        let cpStatus = "";
+        let cpScore = 0;
+        let cpSessionTime = "00:00:10";
+        let cpCompanyName = "TFL";
+        let cpDepartmentName = "Ar-Ge";
+        let cpCourseName = "English";
+        let cpServerAdress = "http://etfo.tfo.k12.tr/tr/student/exercise/save_result";
+
+        let aiServerAdress = "http://localhost:8000/stt/api/speech-recognition/";
+
+
+        var randomNumber = Math.floor(randomDecimal * (99999 - 10000 + 1)) + 10000;
+
+        let cpInteractionID = randomNumber
+
+        let responseData = {}
+
+        let xml = "";
+        $(document).ready(() => {
+            prepare_question(_counter);
+            $('#recordButton').on('mousedown', startRecording);
+            $('#recordButton').on('mouseup', function () {
+                setTimeout(function () {
+                    stopRecording()
+                }, 1000)
+            });
+            responseData.Course = {
+                "CompanyName": cpCompanyName,
+                "DepartmentName": cpDepartmentName,
+                "CourseName": cpCourseName,
+                "LearnerName": learner,
+                "LearnerID": learner,
+                "LessonName": cpLessonName,
+                "QuizAttempts": 1,
+                "TotalQuestions": cpTotalQuestions,
+                "Variables": {},
+                "Result": {
+                    "CoreData": {
+                        "Status": cpStatus,
+                        "Location": "3",
+                        "Score": cpScore,
+                        "SessionTime": cpSessionTime
+                    },
+                    "InteractionData": {
+                        "Interactions": []
+                    }
+                }
+            };
+        })
+
+        function prepare_question(count) {
+            let _progress = 0
+            if (count < questionData.length) {
+                $(".content-content > img").attr("src", "{%static 'test_material/' %}" + questionData[count].image).attr("alt", questionData[count].text);
+                $(".content-content > p").html(questionData[count].text);
+                _progress = (count) / questionData.length * 100;
+            } else {
+                _progress = 100;
+                let avarage = total / questionData.length;
+                $(".content-content > img").attr("src", "{%static 'test_material/img/' %}complate.gif");
+                $(".content-content > p").html("Congratulations, I have completed the activity, and my score is " + avarage + " out of 100");
+                responseData.Course.Result.CoreData.Score = parseInt(Math.round(avarage));
+                $("#result_container").hide();
+                $("#recordButton").hide();
+            }
+            $('#progress-bar').html(_progress + "%").attr("style", "width: " + _progress + "%;").attr("aria-valuenow", _progress);
+            _counter += 1;
+        }
+
+
+        function startRecording() {
+            $("#result_container").html("Kaydediliyor...")
+            console.log("recordButton clicked");
+            let constraints = { audio: true, video: false };
+
+            navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+                console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                gumStream = stream;
+                input = audioContext.createMediaStreamSource(stream);
+
+                rec = new Recorder(input, { numChannels: 1 });
+                rec.record();
+
+                console.log("Recording started");
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+
+        function stopRecording() {
+            rec.stop();
+            gumStream.getAudioTracks()[0].stop();
+            rec.exportWAV(createFileForSubmit);
+            console.log("recording stop");
+            $("#result_container").html("Kayıt durdu.")
+        }
+
+
+        function createFileForSubmit(blob) {
+
+            const formData = new FormData();
+            formData.append('audio', blob, 'recorded.wav');
+            formData.append('correct_text', $("#correct_text").html());
+
+
+            $("#result_container").html("Değerlendirme yapılıyor...")
+            $.ajax({
+                type: 'POST',
+                url: aiServerAdress,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log('Server response:', response);
+                    $("#result_container").html("Puan: " + response.accuracy + "Metin: " + response.text);
+                    if (response.accuracy > 80) {
+                        //doğru sesi çal 
+
+                        var today = new Date();
+
+                        // Tarih bilgisini MM/DD/YYYY formatında almak
+                        var formattedDate = formatDate(today);
+
+                        var formattedTime = formatTime(today);
+
+                        // Objeye yazma
+                        var dateObject = {
+                            year: today.getFullYear(),
+                            month: today.getMonth() + 1, // Ay dizini 0'dan başlar, bu yüzden +1 eklenir
+                            day: today.getDate(),
+                            formattedDate: formattedDate
+                        };
+
+
+                        var timeObject = {
+                            hour: today.getHours(),
+                            minute: today.getMinutes(),
+                            second: today.getSeconds(),
+                            formattedTime: formattedTime
+                        };
+                        let _correctText = $("#correct_text").html();
+                        let Interactions = {
+                            "Date": dateObject.formattedDate,
+                            "InteractionTime": timeObject.formattedTime,
+                            "InteractionID": String(cpInteractionID),
+                            "ObjectiveID": "Quiz_" + cpInteractionID,
+                            "InteractionType": "fill-in",
+                            "CorrectResponse": _correctText,
+                            "StudentResponse": response.text,
+                            "Result": "C",
+                            "Weight": (100 / questionData.length),
+                            "Latency": "",
+                            "Attempt": "1",
+                        };
+
+                        responseData.Course.Result.InteractionData.Interactions.push(Interactions);
+
+                        total += response.accuracy;
+                        prepare_question(_counter);
+
+                        if ((_counter - 1) >= questionData.length) {
+                            xml = toXML(responseData, null, 2);
+                            sendDataToServer(xml);
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.error('Error sending recording to server:', error.responseText);
+                }
+            });
+
+            function formatDate(date) {
+                var month = date.getMonth() + 1; // Ay dizini 0'dan başlar, bu yüzden +1 eklenir
+                var day = date.getDate();
+                var year = date.getFullYear();
+
+                // MM/DD/YYYY formatında tarih oluşturma
+                var formattedDate = month + '/' + day + '/' + year;
+
+                return formattedDate;
+            }
+            function formatTime(date) {
+                var hour = date.getHours();
+                var minute = date.getMinutes();
+                var second = date.getSeconds();
+
+                // HH:mm:ss formatında zaman oluşturma
+                var formattedTime = hour + ':' + minute + ':' + second;
+
+                return formattedTime;
+            }
+            function sendDataToServer(xml_value) {
+                let postData = {
+                    CompanyName: cpCompanyName,
+                    DepartmentName: cpDepartmentName,
+                    CourseName: cpCourseName,
+                    Filename: responseData.LessonName + ".xml",
+                    Filedata: xml_value
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: cpServerAdress,
+                    data: postData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response)
+                    },
+                    error: function (error) {
+                        console.error('Error sending recording to server:', error.responseText);
+                    }
+                });
+
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

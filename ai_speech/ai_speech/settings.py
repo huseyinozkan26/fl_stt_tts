@@ -64,8 +64,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
 #cors settings
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3030',
@@ -78,10 +77,22 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.31.1.25",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'etfo.tfo.k12.tr',
+    'localhost',
+    '127.0.0.1',
+    '10.31.1.24',
+    '10.31.1.25',
+    '195.214.181.54'
+]
+
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 SECURE_SSL_REDIRECT = True
 

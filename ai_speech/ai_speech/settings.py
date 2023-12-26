@@ -37,11 +37,11 @@ SECURE_SSL_REDIRECT = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -65,22 +65,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = [
+
+CORS_ALLOWED_ORIGINS = [
     "https://etfo.tfo.k12.tr",
-    "http://localhost",
+    "https://sub.example.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
     "http://195.214.181.54",
-    "http://127.0.0.1",
     "http://10.31.1.24",
     "http://10.31.1.25",
 ]
 
 CORS_ALLOW_METHODS = [
-    'DELETE',
     'GET',
-    'OPTIONS',
-    'PATCH',
     'POST',
-    'PUT',
 ]
 
 # Database

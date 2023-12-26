@@ -35,7 +35,13 @@ class SpeechRecognitionView(APIView):
         print(temp_audio_file_path)
         os.remove(temp_audio_file_path)
 
-        return Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
+        response = Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
+         # CORS başlıklarını elle ekleyin
+        response["Access-Control-Allow-Origin"] = "https://etfo.tfo.k12.tr"
+        response["Access-Control-Allow-Methods"] = "GET, POST"
+        response["Access-Control-Allow-Headers"] = "Content-Type"
+
+        return response
 
     def transcribe(self, audio_file_path):
         # DeepSpeech komutunu oluşturun

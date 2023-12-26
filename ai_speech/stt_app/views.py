@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.views import View
 
 class SpeechRecognitionView(APIView):
-    @csrf_exempt
+    #@csrf_exempt
     def post(self, request, *args, **kwargs):
         
         if 'audio' not in request.FILES:

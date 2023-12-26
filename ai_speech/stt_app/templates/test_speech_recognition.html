@@ -39,7 +39,7 @@
             $('#resultContainer').html('<p>Değerlendiriliyor... Bekleyin...</p>');
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8000/stt/api/speech-recognition/',
+                url: '/stt/api/speech-recognition/',
                 data: formData,
                 processData: false,
                 contentType: false,

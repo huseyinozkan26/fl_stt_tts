@@ -62,7 +62,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = [
+    "etfo.tfo.k12.tr",
+    "localhost",
+    "195.214.181.54",
+    "127.0.0.1",
+    "10.31.1.24",
+    "10.31.1.25",
+]
 
 CORS_ALLOW_METHODS = [
     'DELETE',

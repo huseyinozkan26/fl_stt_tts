@@ -10,6 +10,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.views import View
+import shutil
+import uuid
 
 class SpeechRecognitionView(APIView):
     @csrf_exempt
@@ -30,7 +32,11 @@ class SpeechRecognitionView(APIView):
         
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
-        transcribed_text = self.transcribe(temp_audio_file_path)
+        random_filename = f"{str(uuid.uuid4())}.wav"
+        static_audio_file_path = os.path.join('/static/', random_filename)
+        shutil.copy(temp_audio_file_path, static_audio_file_path)
+
+        transcribed_text = self.transcribe(static_audio_file_path)
 
         accuracy = self.calculate_accuracy(transcribed_text, submitted_text)
 

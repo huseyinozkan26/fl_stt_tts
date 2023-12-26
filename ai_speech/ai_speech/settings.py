@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'pydub'
 ]
 
+SECURE_SSL_REDIRECT = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

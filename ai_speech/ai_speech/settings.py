@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'stt_app',
+    'sslserver',
     'rest_framework',
     'pydub'
 ]

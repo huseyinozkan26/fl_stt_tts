@@ -61,7 +61,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000, http://portal.tfo.k12.tr",
+    "http://localhost:8000",
+    "http://portal.tfo.k12.tr",
+    "https://portal.tfo.k12.tr",
 ]
 
 CORS_ALLOW_METHODS = [

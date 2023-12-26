@@ -32,12 +32,10 @@ INSTALLED_APPS = [
     'pydub'
 ]
 
-SECURE_SSL_REDIRECT = False
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -65,8 +63,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
+#cors settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3030',
     "https://etfo.tfo.k12.tr",
     "https://sub.example.com",
     "http://localhost:8000",
@@ -80,6 +82,9 @@ CORS_ALLOW_METHODS = [
     'GET',
     'POST',
 ]
+
+SECURE_SSL_REDIRECT = True
+
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

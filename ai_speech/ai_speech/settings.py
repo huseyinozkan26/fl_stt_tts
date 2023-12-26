@@ -60,6 +60,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000, http://portal.tfo.k12.tr",
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

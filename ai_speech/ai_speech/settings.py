@@ -14,7 +14,7 @@ SECRET_KEY = '9=5c*j+v!@r!%)pm1*c0b_c*^ovpkdl*w^!0)fqysl5g2+253-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.31.1.25","10.31.1.24","localhost", "127.0.0.1","195.214.181.54"]
+ALLOWED_HOSTS = ["10.31.1.25","10.31.1.24","localhost", "127.0.0.1","195.214.181.54","etfo.tfo.k12.tr"]
 
 # Application definition
 
@@ -66,12 +66,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = [
-    "etfo.tfo.k12.tr",
-    "localhost",
-    "195.214.181.54",
-    "127.0.0.1",
-    "10.31.1.24",
-    "10.31.1.25",
+    "https://etfo.tfo.k12.tr",
+    "http://localhost",
+    "http://195.214.181.54",
+    "http://127.0.0.1",
+    "http://10.31.1.24",
+    "http://10.31.1.25",
 ]
 
 CORS_ALLOW_METHODS = [

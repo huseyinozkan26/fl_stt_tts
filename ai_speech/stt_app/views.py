@@ -27,13 +27,15 @@ class SpeechRecognitionView(APIView):
         with tempfile.NamedTemporaryFile(delete=False) as temp_audio_file:
             temp_audio_file.write(audio_data)
             temp_audio_file_path = temp_audio_file.name
+        
+        print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
         transcribed_text = self.transcribe(temp_audio_file_path)
 
         accuracy = self.calculate_accuracy(transcribed_text, submitted_text)
 
         print(temp_audio_file_path)
-        os.remove(temp_audio_file_path)
+        #os.remove(temp_audio_file_path)
 
         response = Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
          # CORS başlıklarını elle ekleyin

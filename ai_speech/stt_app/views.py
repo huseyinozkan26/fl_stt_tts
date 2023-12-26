@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.views import View
 import shutil
 import uuid
+from django.conf import settings
 
 class SpeechRecognitionView(APIView):
     @csrf_exempt
@@ -26,15 +27,18 @@ class SpeechRecognitionView(APIView):
         audio_data = audio_file.read()
 
          # Ses verisini geçici bir dosyaya kaydet
-        with tempfile.NamedTemporaryFile(delete=False) as temp_audio_file:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
             temp_audio_file.write(audio_data)
             temp_audio_file_path = temp_audio_file.name
-        
+            
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
+        # Rastgele bir isim oluştur
         random_filename = f"{str(uuid.uuid4())}.wav"
-        static_audio_file_path = os.path.join('/static/', random_filename)
-        shutil.copy(temp_audio_file_path, static_audio_file_path)
+
+        # Ses dosyasını STATIC_ROOT'a taşı
+        static_audio_file_path = os.path.join(settings.STATIC_ROOT, random_filename)
+        shutil.move(temp_audio_file_path, static_audio_file_path)
 
         transcribed_text = self.transcribe(static_audio_file_path)
 

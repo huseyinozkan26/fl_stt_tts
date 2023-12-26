@@ -14,8 +14,6 @@ SECRET_KEY = '9=5c*j+v!@r!%)pm1*c0b_c*^ovpkdl*w^!0)fqysl5g2+253-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["10.31.1.25","10.31.1.24","localhost", "127.0.0.1","195.214.181.54","etfo.tfo.k12.tr"]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -25,12 +23,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
     'stt_app',
     'sslserver',
     'rest_framework',
+    'corsheaders',
+    'rest_framework.authtoken',
     'pydub'
 ]
+
+ALLOWED_HOSTS = ["10.31.1.25","10.31.1.24","localhost", "127.0.0.1","195.214.181.54","etfo.tfo.k12.tr"]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,37 +67,35 @@ WSGI_APPLICATION = 'ai_speech.wsgi.application'
 
 #cors settings
 
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3030',
-    "https://etfo.tfo.k12.tr",
-    "https://sub.example.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://195.214.181.54",
-    "http://10.31.1.24",
-    "http://10.31.1.25",
-]
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',  # for localhost (REACT Default)
+    'http://195.214.181.54/:3000',  # for network 
+    'http://localhost:8080',  # for localhost (Developlemt)
+    'http://10.31.1.24',  # for network (Development)
+    'https://etfo.tfo.k12.tr',  # for network (E-TFO)
+    'http://etfo.tfo.k12.tr',  # for network (E-TFO)
+)
 
 CSRF_TRUSTED_ORIGINS = [
-    'etfo.tfo.k12.tr',
-    'localhost',
-    '127.0.0.1',
-    '10.31.1.24',
-    '10.31.1.25',
-    '195.214.181.54'
+    'http://localhost:3000',  # for localhost (REACT Default)
+    'http://195.214.181.54/:3000',  # for network 
+    'http://localhost:8080',  # for localhost (Developlemt)
+    'http://10.31.1.24',  # for network (Development)
+    'https://etfo.tfo.k12.tr',  # for network (E-TFO)
+    'http://etfo.tfo.k12.tr',  # for network (E-TFO)
 ]
 
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-
-SECURE_SSL_REDIRECT = True
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

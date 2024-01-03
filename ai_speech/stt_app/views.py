@@ -41,11 +41,11 @@ class SpeechRecognitionView(APIView):
 
         response = JsonResponse({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
          # CORS başlıklarını elle ekleyin
-        '''
+        
         response["Access-Control-Allow-Origin"] = "https://localhost:8080"
         response["Access-Control-Allow-Methods"] = "GET, POST"
         response["Access-Control-Allow-Headers"] = "Content-Type"
-        '''
+        
         os.remove(temp_audio_file_path)
         return response
 

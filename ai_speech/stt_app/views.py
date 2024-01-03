@@ -37,8 +37,7 @@ class SpeechRecognitionView(APIView):
 
         accuracy = self.calculate_accuracy(transcribed_text, submitted_text)
 
-        print(temp_audio_file_path)
-        #os.remove(temp_audio_file_path)
+        
 
         response = Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
          # CORS başlıklarını elle ekleyin
@@ -47,6 +46,7 @@ class SpeechRecognitionView(APIView):
         response["Access-Control-Allow-Methods"] = "GET, POST"
         response["Access-Control-Allow-Headers"] = "Content-Type"
         '''
+        os.remove(temp_audio_file_path)
         return response
 
     def transcribe(self, audio_file_path):

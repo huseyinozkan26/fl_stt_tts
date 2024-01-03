@@ -15,7 +15,7 @@ import uuid
 from django.conf import settings
 
 class SpeechRecognitionView(APIView):
-    @csrf_exempt
+   
     def post(self, request, *args, **kwargs):
         
         if 'audio' not in request.FILES:

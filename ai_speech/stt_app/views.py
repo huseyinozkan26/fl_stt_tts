@@ -5,9 +5,6 @@ import difflib
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -19,8 +16,6 @@ from django.conf import settings
 
 class SpeechRecognitionView(APIView):
     @csrf_exempt
-    @api_view(['POST'])
-    @permission_classes([AllowAny])
     def post(self, request, *args, **kwargs):
         print("post metodu çalıştı")
         if 'audio' not in request.FILES:
@@ -54,11 +49,11 @@ class SpeechRecognitionView(APIView):
 
         response = Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
          # CORS başlıklarını elle ekleyin
-        '''
-        response["Access-Control-Allow-Origin"] = "https://etfo.tfo.k12.tr"
+    
+        response["Access-Control-Allow-Origin"] = "https://localhost:8080"
         response["Access-Control-Allow-Methods"] = "GET, POST"
         response["Access-Control-Allow-Headers"] = "Content-Type"
-        '''
+    
         return response
 
     def transcribe(self, audio_file_path):

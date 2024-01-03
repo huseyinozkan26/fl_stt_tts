@@ -15,9 +15,9 @@ import uuid
 from django.conf import settings
 
 class SpeechRecognitionView(APIView):
-   
+    @csrf_exempt
     def post(self, request, *args, **kwargs):
-        
+        print("post metodu çalıştı")
         if 'audio' not in request.FILES:
             return JsonResponse({'error': 'No audio file provided'}, status=400)
 
@@ -25,7 +25,7 @@ class SpeechRecognitionView(APIView):
         submitted_text = request.POST.get('correct_text', '')  # Formdan gelen doğru metin
         
         audio_data = audio_file.read()
-
+        print("Ses dosyası okundu")
          # Ses verisini geçici bir dosyaya kaydet
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
             temp_audio_file.write(audio_data)
@@ -49,10 +49,11 @@ class SpeechRecognitionView(APIView):
 
         response = Response({'text': transcribed_text, 'accuracy': accuracy}, status=status.HTTP_200_OK)
          # CORS başlıklarını elle ekleyin
+        '''
         response["Access-Control-Allow-Origin"] = "https://etfo.tfo.k12.tr"
         response["Access-Control-Allow-Methods"] = "GET, POST"
         response["Access-Control-Allow-Headers"] = "Content-Type"
-
+        '''
         return response
 
     def transcribe(self, audio_file_path):

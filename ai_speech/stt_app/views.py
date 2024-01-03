@@ -33,14 +33,7 @@ class SpeechRecognitionView(APIView):
             
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
-        # Rastgele bir isim oluştur
-        random_filename = str(uuid.uuid4()) + ".wav"
-
-        # Ses dosyasını STATIC_ROOT'a taşı
-        static_audio_file_path = os.path.join(settings.STATIC_ROOT, random_filename)
-        shutil.move(temp_audio_file_path, static_audio_file_path)
-
-        transcribed_text = self.transcribe(static_audio_file_path)
+        transcribed_text = self.transcribe(temp_audio_file_path)
 
         accuracy = self.calculate_accuracy(transcribed_text, submitted_text)
 

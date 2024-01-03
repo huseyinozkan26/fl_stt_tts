@@ -5,6 +5,9 @@ import difflib
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -16,6 +19,8 @@ from django.conf import settings
 
 class SpeechRecognitionView(APIView):
     @csrf_exempt
+    @api_view(['POST'])
+    @permission_classes([AllowAny])
     def post(self, request, *args, **kwargs):
         print("post metodu çalıştı")
         if 'audio' not in request.FILES:

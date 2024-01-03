@@ -75,6 +75,14 @@ CORS_ORIGIN_WHITELIST = (
     'https://etfo.tfo.k12.tr',  # for network (E-TFO)
     'http://etfo.tfo.k12.tr',  # for network (E-TFO)
 )
+CORS_ALLOWED_ORIGINS = [
+   'http://localhost:3000',  # for localhost (REACT Default)
+    'http://195.214.181.54/:3000',  # for network 
+    'http://localhost:8080',  # for localhost (Developlemt)
+    'http://10.31.1.24',  # for network (Development)
+    'https://etfo.tfo.k12.tr',  # for network (E-TFO)
+    'http://etfo.tfo.k12.tr',  # for network (E-TFO)
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',  # for localhost (REACT Default)

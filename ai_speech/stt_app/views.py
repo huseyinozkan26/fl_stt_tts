@@ -34,7 +34,7 @@ class SpeechRecognitionView(APIView):
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
         # Rastgele bir isim oluştur
-        random_filename = f"{str(uuid.uuid4())}.wav"
+        random_filename = str(uuid.uuid4()) + ".wav"
 
         # Ses dosyasını STATIC_ROOT'a taşı
         static_audio_file_path = os.path.join(settings.STATIC_ROOT, random_filename)

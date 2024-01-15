@@ -17,12 +17,12 @@ from django.conf import settings
 class SpeechRecognitionView(APIView):
     @csrf_exempt
     def post(self, request, *args, **kwargs):
-        print("post metodu çalıştı")
         if 'audio' not in request.FILES:
             return JsonResponse({'error': 'No audio file provided'}, status=400)
 
         audio_file = request.FILES['audio']
         submitted_text = request.POST.get('correct_text', '')  # Formdan gelen doğru metin
+        setted_lang = request.POST.get('lang', '')  # Formdan gelen doğru metin
         
         audio_data = audio_file.read()
         print("Ses dosyası okundu")
@@ -33,7 +33,7 @@ class SpeechRecognitionView(APIView):
             
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
-        transcribed_text = self.transcribe(temp_audio_file_path)
+        transcribed_text = self.transcribe(temp_audio_file_path,setted_lang)
 
         accuracy = self.calculate_accuracy(transcribed_text, submitted_text)
 
@@ -49,14 +49,23 @@ class SpeechRecognitionView(APIView):
         os.remove(temp_audio_file_path)
         return response
 
-    def transcribe(self, audio_file_path):
+    def transcribe(self, audio_file_path, setted_lang = ""):
         # DeepSpeech komutunu oluşturun
-        command = [
-            "deepspeech",
-            "--model", "../dsmodel/deepspeech-0.9.3-models.pbmm",
-            "--scorer", "../dsmodel/deepspeech-0.9.3-models.scorer",
-            "--audio", audio_file_path
-        ]
+        if(setted_lang == "fr"):
+            command = [
+                        "deepspeech",
+                        "--model", "../dsmodel/deepspeech-french-scorer/output_graph_fr.pbmm",
+                        "--scorer", "../dsmodel/deepspeech-french-scorer/kenlm_fr.scorer",
+                        "--audio", audio_file_path
+                    ]
+        else:
+            command = [
+                        "deepspeech",
+                        "--model", "../dsmodel/deepspeech-0.9.3-models.pbmm",
+                        "--scorer", "../dsmodel/deepspeech-0.9.3-models.scorer",
+                        "--audio", audio_file_path
+                    ]
+
         print(command)
         # deepspeech komutunu çalıştırın
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

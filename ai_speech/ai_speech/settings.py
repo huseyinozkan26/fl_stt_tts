@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9=5c*j+v!@r!%)pm1*c0b_c*^ovpkdl*w^!0)fqysl5g2+253-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
@@ -118,6 +118,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE  = True
+SESSION_COOKIE_SECURE = True
 
 
 # Password validation

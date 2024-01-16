@@ -24,12 +24,16 @@ class SpeechRecognitionView(APIView):
         submitted_text = request.POST.get('correct_text', '')  # Formdan gelen doğru metin
         setted_lang = request.POST.get('lang', '')  # Formdan gelen doğru metin
         
+        print("seçilen dil: "+ setted_lang);
         audio_data = audio_file.read()
         print("Ses dosyası okundu")
+        
          # Ses verisini geçici bir dosyaya kaydet
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio_file:
             temp_audio_file.write(audio_data)
             temp_audio_file_path = temp_audio_file.name
+
+        
             
         print("Dosya Başarıyla Kaydedildi:", temp_audio_file_path)
 
